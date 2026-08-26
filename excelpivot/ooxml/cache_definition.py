@@ -72,7 +72,7 @@ def generate_cache_definition(cache):
             {}
         )
 
-        if field.data_type in ("string", "integer"):
+        if field.data_type == "string":
 
             items = ET.SubElement(
                 cache_field,
@@ -84,17 +84,43 @@ def generate_cache_definition(cache):
 
             for value in shared_items.keys():
 
-                if isinstance(value, str):
+                ET.SubElement(
+                    items,
+                    qname(MAIN_NS, "s"),
+                    {
+                        "v": value
+                    }
+                )
 
-                    ET.SubElement(
-                        items,
-                        qname(MAIN_NS, "s"),
-                        {
-                            "v": value
-                        }
-                    )
+        elif field.data_type == "integer":
 
-                elif isinstance(value, int):
+            metadata = cache.field_metadata[
+                field.name
+            ]
+
+            if shared_items:
+
+                items = ET.SubElement(
+                    cache_field,
+                    qname(MAIN_NS, "sharedItems"),
+                    {
+                        "containsSemiMixedTypes": "0",
+                        "containsString": "0",
+                        "containsNumber": "1",
+                        "containsInteger": "1",
+                        "minValue": str(
+                            metadata["min"]
+                        ),
+                        "maxValue": str(
+                            metadata["max"]
+                        ),
+                        "count": str(
+                            len(shared_items)
+                        ),
+                    }
+                )
+
+                for value in shared_items.keys():
 
                     ET.SubElement(
                         items,
@@ -104,7 +130,27 @@ def generate_cache_definition(cache):
                         }
                     )
 
-        elif field.data_type in ("number",):
+            else:
+
+                ET.SubElement(
+                    cache_field,
+                    qname(MAIN_NS, "sharedItems"),
+                    {
+                        "containsSemiMixedTypes":
+                            "0",
+                        "containsString": "0",
+                        "containsNumber": "1",
+                        "containsInteger": "1",
+                        "minValue": str(
+                            metadata["min"]
+                        ),
+                        "maxValue": str(
+                            metadata["max"]
+                        ),
+                    }
+                )
+
+        elif field.data_type == "number":
 
             metadata = cache.field_metadata[
                 field.name

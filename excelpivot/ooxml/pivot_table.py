@@ -229,7 +229,7 @@ def add_row_items(
         }
     )
 
-    for index in indexes:
+    for item_index in range(len(indexes)):
 
         item = ET.SubElement(
             row_items,
@@ -239,16 +239,16 @@ def add_row_items(
             )
         )
 
-        ET.SubElement(
+        x_elem = ET.SubElement(
             item,
             qname(
                 MAIN_NS,
                 "x"
-            ),
-            {
-                "v": str(index)
-            }
+            )
         )
+
+        if item_index != 0:
+            x_elem.set("v", str(item_index))
 
     grand_total = ET.SubElement(
         row_items,
@@ -305,7 +305,7 @@ def add_column_items(
         }
     )
 
-    for index in indexes:
+    for item_index in range(len(indexes)):
 
         item = ET.SubElement(
             col_items,
@@ -315,16 +315,16 @@ def add_column_items(
             )
         )
 
-        ET.SubElement(
+        x_elem = ET.SubElement(
             item,
             qname(
                 MAIN_NS,
                 "x"
-            ),
-            {
-                "v": str(index)
-            }
+            )
         )
+
+        if item_index != 0:
+            x_elem.set("v", str(item_index))
 
     grand_total = ET.SubElement(
         col_items,
@@ -365,11 +365,18 @@ def generate_pivot_table_definition(
         {
             "name": name,
             "cacheId": str(cache_id),
+            "applyNumberFormats": "0",
+            "applyBorderFormats": "0",
+            "applyFontFormats": "0",
+            "applyPatternFormats": "0",
+            "applyAlignmentFormats": "0",
+            "applyWidthHeightFormats": "1",
             "dataCaption": "Values",
             "updatedVersion": "8",
             "minRefreshableVersion": "3",
-            "createdVersion": "8",
             "useAutoFormatting": "1",
+            "itemPrintTitles": "1",
+            "createdVersion": "8",
             "indent": "0",
             "outline": "1",
             "outlineData": "1",

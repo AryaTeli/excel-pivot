@@ -42,6 +42,10 @@ from excelpivot.package.pivot_table_relationships import (
     pivot_table_relationships_xml
 )
 
+from excelpivot.package.styles import (
+    styles_xml
+)
+
 
 from excelpivot.ooxml.cache_definition import (
     cache_definition_xml
@@ -96,6 +100,19 @@ def build_xlsx(
     ) as archive:
 
         # ==================================================
+        # Build integer dimension shared items
+        # ==================================================
+        #
+        # Integer fields used as dimensions
+        # (row, column, filter) need shared items
+        # built before XML generation.
+        #
+
+        cache.build_dimension_shared_items(
+            pivot
+        )
+
+        # ==================================================
         # Root relationships
         # ==================================================
 
@@ -125,6 +142,15 @@ def build_xlsx(
         archive.writestr(
             "xl/_rels/workbook.xml.rels",
             workbook_relationships_xml()
+        )
+
+        # ==================================================
+        # Styles
+        # ==================================================
+
+        archive.writestr(
+            "xl/styles.xml",
+            styles_xml()
         )
 
         # ==================================================

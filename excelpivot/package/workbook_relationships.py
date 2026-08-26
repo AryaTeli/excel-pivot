@@ -68,6 +68,21 @@ def generate_workbook_relationships():
         }
     )
 
+    # Styles
+    ET.SubElement(
+        root,
+        qname("Relationship"),
+        {
+            "Id": "rId4",
+            "Type": (
+                "http://schemas.openxmlformats.org/"
+                "officeDocument/2006/relationships/"
+                "styles"
+            ),
+            "Target": "styles.xml"
+        }
+    )
+
     return root
 
 

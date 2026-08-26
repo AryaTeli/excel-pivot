@@ -39,7 +39,7 @@ def test_content_types():
         if local_name(element.tag) == "Override"
     ]
 
-    assert len(overrides) == 6
+    assert len(overrides) == 8
 
 
 def test_workbook():
@@ -69,13 +69,15 @@ def test_workbook_relationships():
 
     relationships = list(root)
 
-    assert len(relationships) == 3
+    assert len(relationships) == 4
 
     assert relationships[0].attrib["Id"] == "rId1"
 
     assert relationships[1].attrib["Id"] == "rId2"
 
     assert relationships[2].attrib["Id"] == "rId3"
+
+    assert relationships[3].attrib["Id"] == "rId4"
 
 def test_pivot_worksheet_relationships():
 

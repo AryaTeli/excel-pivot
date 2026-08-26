@@ -72,12 +72,11 @@ def test_shared_items():
         "Tablet"
     ]
 
-    assert list(
-        cache.shared_items["Year"].keys()
-    ) == [
-        2025,
-        2026
-    ]
+    # Integer fields do not get shared items
+    # during initial construction.
+    assert "Year" not in cache.shared_items
+    assert "Revenue" not in cache.shared_items
+    assert "Quantity" not in cache.shared_items
 
 
 def test_shared_indexes():
@@ -104,6 +103,30 @@ def test_shared_indexes():
         "Phone"
     ) == 1
 
+
+def test_dimension_shared_items():
+
+    from excelpivot.pivot import PivotTable
+
+    cache = build_cache()
+
+    pivot = PivotTable(cache=cache)
+    pivot.add_row("Region")
+    pivot.add_column("Product")
+    pivot.add_filter("Year")
+    pivot.add_value("Revenue", "sum")
+
+    cache.build_dimension_shared_items(pivot)
+
+    # Year is an integer dimension field
+    # and should now have shared items.
+    assert list(
+        cache.shared_items["Year"].keys()
+    ) == [
+        2025,
+        2026
+    ]
+
     assert cache.get_shared_index(
         "Year",
         2025
@@ -113,3 +136,8 @@ def test_shared_indexes():
         "Year",
         2026
     ) == 1
+
+    # Revenue and Quantity are value fields
+    # and should NOT have shared items.
+    assert "Revenue" not in cache.shared_items
+    assert "Quantity" not in cache.shared_items

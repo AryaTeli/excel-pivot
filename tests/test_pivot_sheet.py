@@ -90,7 +90,7 @@ def test_dimension():
 
     assert dimension.attrib[
         "ref"
-    ] == "A3:E9"
+    ] == "A1:E9"
 
 
 def test_pivot_values():

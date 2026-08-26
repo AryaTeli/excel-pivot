@@ -45,6 +45,18 @@ def generate_content_types():
         root,
         qname("Override"),
         {
+            "PartName": "/xl/styles.xml",
+            "ContentType": (
+                "application/vnd.openxmlformats-"
+                "officedocument.spreadsheetml.styles+xml"
+            )
+        }
+    )
+
+    ET.SubElement(
+        root,
+        qname("Override"),
+        {
             "PartName": "/xl/workbook.xml",
             "ContentType": (
                 "application/vnd.openxmlformats-"
@@ -122,6 +134,18 @@ def generate_content_types():
             "ContentType": (
                 "application/vnd.openxmlformats-"
                 "officedocument.spreadsheetml.pivotTable+xml"
+            )
+        }
+    )
+
+    ET.SubElement(
+        root,
+        qname("Override"),
+        {
+            "PartName": "/xl/tables/table1.xml",
+            "ContentType": (
+                "application/vnd.openxmlformats-"
+                "officedocument.spreadsheetml.table+xml"
             )
         }
     )

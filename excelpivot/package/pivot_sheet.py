@@ -235,6 +235,8 @@ def generate_pivot_sheet(
     # Rows 5-9 = data
     #
 
+    first_row = 1 if pivot.filters else start_row
+
     last_row = (
         start_row
         + len(data_rows)
@@ -248,7 +250,7 @@ def generate_pivot_sheet(
     )
 
     dimension_ref = (
-        f"{cell_reference(start_row, start_column)}:"
+        f"{cell_reference(first_row, start_column)}:"
         f"{cell_reference(last_row, last_column)}"
     )
 

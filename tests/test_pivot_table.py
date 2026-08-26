@@ -37,6 +37,8 @@ def build_pivot():
         "sum"
     )
 
+    cache.build_dimension_shared_items(pivot)
+
     return cache, pivot
 
 

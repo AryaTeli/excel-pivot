@@ -69,10 +69,7 @@ class PivotCache:
     def _build_shared_items(self):
         for field in self.fields:
 
-            if field.data_type not in (
-                "string",
-                "integer"
-            ):
+            if field.data_type != "string":
                 continue
 
             values = []
@@ -86,6 +83,48 @@ class PivotCache:
             self.shared_items[field.name] = OrderedDict(
                 (value, index)
                 for index, value in enumerate(values)
+            )
+
+    def build_dimension_shared_items(self, pivot):
+        """
+        Build shared items for integer fields
+        used as dimensions (row, column, filter).
+
+        Must be called after PivotTable roles
+        have been assigned.
+        """
+
+        dimension_fields = (
+            pivot.rows
+            + pivot.columns
+            + pivot.filters
+        )
+
+        for field in dimension_fields:
+
+            if field.data_type != "integer":
+                continue
+
+            if field.name in self.shared_items:
+                continue
+
+            values = []
+
+            for record in self.records:
+                value = record[field.index]
+
+                if (
+                    value is not None
+                    and value not in values
+                ):
+                    values.append(value)
+
+            self.shared_items[
+                field.name
+            ] = OrderedDict(
+                (value, index)
+                for index, value
+                in enumerate(values)
             )
 
     def get_field(self, name):

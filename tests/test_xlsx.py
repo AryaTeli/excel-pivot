@@ -147,3 +147,13 @@ def test_xlsx_structure(tmp_path):
         "pivotTable1.xml.rels"
         in names
     )
+
+    assert (
+        "xl/styles.xml"
+        in names
+    )
+
+    assert (
+        "xl/tables/table1.xml"
+        in names
+    )

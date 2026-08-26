@@ -34,6 +34,8 @@ def build_pivot():
     pivot.add_filter("Year")
     pivot.add_value("Revenue", "sum")
 
+    cache.build_dimension_shared_items(pivot)
+
     return cache, pivot
 
 
