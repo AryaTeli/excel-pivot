@@ -26,3 +26,25 @@ def test_read_table():
         10000,
         10
     )
+
+
+def test_read_sheet():
+
+    source = ExcelSource(
+        "reference/v1_simple.xlsx"
+    )
+
+    headers, records = source.read_sheet(
+        sheet_name="Sales",
+        header_row=1
+    )
+
+    assert headers == [
+        "Region",
+        "Product",
+        "Year",
+        "Revenue",
+        "Quantity"
+    ]
+
+    assert len(records) == 10

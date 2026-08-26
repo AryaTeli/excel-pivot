@@ -316,17 +316,7 @@ def generate_pivot_sheet(
         pivot
     )
 
-    # ==================================================
     # Pivot Header Row
-    # ==================================================
-    #
-    # Excel uses this row to identify the row and
-    # column areas of the PivotTable.
-    #
-    # A3 = Row Labels
-    # B3 = Column Labels
-    #
-
     pivot_header_row = ET.SubElement(
         sheet_data,
         qname(
@@ -345,24 +335,16 @@ def generate_pivot_sheet(
         "Row Labels"
     )
 
-    add_string_cell(
-        pivot_header_row,
-        start_row,
-        start_column + 1,
-        "Column Labels"
-    )
+    if pivot.columns:
+        add_string_cell(
+            pivot_header_row,
+            start_row,
+            start_column + 1,
+            "Column Labels"
+        )
 
-    # ==================================================
     # Actual Pivot Headers
-    # ==================================================
-    #
-    # Row 4 in the reference workbook.
-    #
-
-    header_row_number = (
-        start_row + 1
-    )
-
+    header_row_number = start_row + 1
     header_row = ET.SubElement(
         sheet_data,
         qname(
@@ -370,21 +352,12 @@ def generate_pivot_sheet(
             "row"
         ),
         {
-            "r": str(
-                header_row_number
-            )
+            "r": str(header_row_number)
         }
     )
 
-    for offset, value in enumerate(
-        headers
-    ):
-
-        column_number = (
-            start_column
-            + offset
-        )
-
+    for offset, value in enumerate(headers):
+        column_number = start_column + offset
         add_string_cell(
             header_row,
             header_row_number,
@@ -392,20 +365,9 @@ def generate_pivot_sheet(
             value
         )
 
-    # ==================================================
     # Data Rows
-    # ==================================================
-
-    for row_offset, values in enumerate(
-        data_rows,
-        start=2
-    ):
-
-        row_number = (
-            start_row
-            + row_offset
-        )
-
+    for row_offset, values in enumerate(data_rows, start=2):
+        row_number = start_row + row_offset
         row = ET.SubElement(
             sheet_data,
             qname(
@@ -417,15 +379,8 @@ def generate_pivot_sheet(
             }
         )
 
-        for column_offset, value in enumerate(
-            values
-        ):
-
-            column_number = (
-                start_column
-                + column_offset
-            )
-
+        for column_offset, value in enumerate(values):
+            column_number = start_column + column_offset
             add_value_cell(
                 row,
                 row_number,

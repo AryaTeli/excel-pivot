@@ -346,16 +346,45 @@ def add_column_items(
     )
 
 
+def column_name(index):
+    result = ""
+    index += 1
+    while index:
+        index, remainder = divmod(index - 1, 26)
+        result = chr(65 + remainder) + result
+    return result
+
+
+def calculate_pivot_location(pivot, start_row=3, start_column=0):
+    try:
+        result = pivot.calculate()
+        headers = result["headers"]
+        rows = result["rows"]
+        num_cols = len(headers) if headers else 1
+        num_rows = (len(rows) + 2) if rows else 2
+    except Exception:
+        num_cols = 5
+        num_rows = 7
+
+    start_col_str = column_name(start_column)
+    end_col_str = column_name(start_column + max(num_cols, 1) - 1)
+    end_row_num = start_row + max(num_rows, 1) - 1
+
+    return f"{start_col_str}{start_row}:{end_col_str}{end_row_num}"
+
+
 def generate_pivot_table_definition(
     cache,
     pivot,
     name="PivotTable1",
     cache_id=5,
-    location="A3:E9"
+    location=None
 ):
     """
     Generate the XML tree for pivotTableDefinition.
     """
+    if location is None:
+        location = calculate_pivot_location(pivot)
 
     root = ET.Element(
         qname(
@@ -639,7 +668,7 @@ def pivot_table_definition_xml(
     pivot,
     name="PivotTable1",
     cache_id=5,
-    location="A3:E9"
+    location=None
 ):
     """
     Serialize pivotTableDefinition to XML bytes.

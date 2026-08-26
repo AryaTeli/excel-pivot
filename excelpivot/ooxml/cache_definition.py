@@ -29,6 +29,7 @@ def generate_cache_definition(cache):
             "createdVersion": "8",
             "refreshedVersion": "8",
             "minRefreshableVersion": "3",
+            "refreshOnLoad": "1",
         }
     )
 
